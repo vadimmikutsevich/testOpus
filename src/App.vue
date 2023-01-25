@@ -1,11 +1,15 @@
 <template>
   <router-view />
+  <QSpinner/>
 </template>
 
 <script>
-import { defineComponent } from 'vue';
+import QSpinner from './components/QSpinner.vue';
 
-export default defineComponent({
+export default {
   name: 'App',
-});
+  components: {
+    QSpinner,
+  },
+};
 </script>
