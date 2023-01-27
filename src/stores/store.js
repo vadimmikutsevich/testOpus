@@ -5,16 +5,4 @@ export const useStore = defineStore('store', {
     isAuth: false,
     isLoading: false,
   }),
-
-  getters: {
-
-  },
-
-  mutations: {
-
-  },
-
-  actions: {
-
-  },
 });

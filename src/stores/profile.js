@@ -1,7 +1,9 @@
 import { defineStore } from 'pinia';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import {
-  collection, getDocs, query, where, addDoc, limit,
+  createUserWithEmailAndPassword, signInWithEmailAndPassword, updateEmail, updatePassword,
+} from 'firebase/auth';
+import {
+  collection, getDocs, query, where, setDoc, limit, doc,
 } from 'firebase/firestore';
 import { auth, db } from 'src/boot/firebase';
 import Router from 'src/router';
@@ -9,22 +11,15 @@ import { useStore } from './store';
 
 export const useProfileStore = defineStore('profile', {
   state: () => ({
+    email: '',
     name: '',
     surname: '',
     isManager: false,
     uid: '',
     store: useStore(),
   }),
-
-  getters: {
-
-  },
-
-  mutations: {
-
-  },
-
   actions: {
+    // eslint-disable-next-line consistent-return
     async register(email, password, name, surname, isManager) {
       this.store.isLoading = true;
 
@@ -32,19 +27,18 @@ export const useProfileStore = defineStore('profile', {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const { user } = userCredential;
         if (user) {
-          const docRef = await addDoc(collection(db, 'usersCollection'), {
+          await setDoc(doc(db, 'usersCollection', user.uid), {
             uid: user.uid,
             name,
             surname,
-            isManager: true,
+            isManager: !!isManager,
           });
 
-          if (docRef) {
-            this.name = name;
-            this.surname = surname;
-            this.uid = user.uid;
-            this.isManager = isManager;
-          }
+          this.name = name;
+          this.surname = surname;
+          this.uid = user.uid;
+          this.isManager = isManager;
+          this.email = email;
         }
 
         this.store.isLoading = false;
@@ -54,7 +48,7 @@ export const useProfileStore = defineStore('profile', {
       } catch (e) {
         this.store.isLoading = false;
         Router.push({ name: 'Error' });
-        return e.message;
+        console.log(e.message);
       }
     },
 
@@ -66,13 +60,13 @@ export const useProfileStore = defineStore('profile', {
         const { user } = userCredential;
 
         if (user) {
+          this.email = user.email;
           const modelRef = collection(db, 'usersCollection');
 
           const q = query(modelRef, where('uid', '==', user.uid), limit(1));
           const querySnapshot = await getDocs(q);
 
           const userInfo = querySnapshot.docs[0].data();
-          console.log(userInfo);
 
           if (userInfo) {
             this.name = userInfo.name;
@@ -86,6 +80,35 @@ export const useProfileStore = defineStore('profile', {
         this.store.isLoading = false;
         Router.push({ name: 'Home' });
         return user;
+      } catch (e) {
+        this.store.isLoading = false;
+        Router.push({ name: 'Error' });
+        return e.message;
+      }
+    },
+
+    // eslint-disable-next-line consistent-return
+    async updateEmail(email) {
+      this.store.isLoading = true;
+
+      try {
+        await updateEmail(auth.currentUser, email);
+        this.email = email;
+        this.store.isLoading = false;
+      } catch (e) {
+        this.store.isLoading = false;
+        Router.push({ name: 'Error' });
+        return e.message;
+      }
+    },
+
+    // eslint-disable-next-line consistent-return
+    async resetPassword(password) {
+      this.store.isLoading = true;
+
+      try {
+        await updatePassword(auth.currentUser, password);
+        this.store.isLoading = false;
       } catch (e) {
         this.store.isLoading = false;
         Router.push({ name: 'Error' });

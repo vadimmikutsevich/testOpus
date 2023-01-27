@@ -17,9 +17,20 @@
       </q-tabs>
     </q-header>
 
-    <q-drawer v-if="store.isAuth" show-if-above v-model="leftDrawerOpen" side="left" bordered>
-        <!-- drawer content -->
-        <ProfileView />
+    <q-drawer v-if="store.isAuth"
+      class="bg-primary text-white"
+      show-if-above
+      v-model="leftDrawerOpen"
+      side="left"
+      style="padding-left: 14px"
+      bordered>
+        <h2>Welcome</h2>
+        <p class="text-weight-bold text-subtitle1">Email: {{ profile.email }}</p>
+        <p class="text-weight-bold text-subtitle1">Name: {{ profile.name }}</p>
+        <p class="text-weight-bold text-subtitle1">Surname: {{ profile.surname }}</p>
+        <p class="text-weight-bold text-subtitle1">
+          Status: {{ profile.isManager ? 'Manager' : 'User'}}
+        </p>
     </q-drawer>
 
     <q-page-container>
@@ -33,12 +44,8 @@
 import { ref } from 'vue';
 import { useStore } from 'src/stores/store';
 import { useProfileStore } from 'src/stores/profile';
-import ProfileView from 'src/components/ProfileView.vue';
 
 export default {
-  components: {
-    ProfileView,
-  },
   setup() {
     const leftDrawerOpen = ref(false);
     const store = useStore();

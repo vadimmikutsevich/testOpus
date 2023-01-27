@@ -1,4 +1,4 @@
-import { createRouter, createMemoryHistory } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import { useStore } from 'src/stores/store';
 import routes from './routes';
 
@@ -9,7 +9,7 @@ const Router = createRouter({
   // Leave this as is and make changes in quasar.conf.js instead!
   // quasar.conf.js -> build -> vueRouterMode
   // quasar.conf.js -> build -> publicPath
-  history: createMemoryHistory(),
+  history: createWebHistory(),
 });
 
 // eslint-disable-next-line consistent-return
