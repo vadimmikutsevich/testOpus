@@ -1,0 +1,10 @@
+{
+  "@quasar/testing-unit-vitest": {
+    "options": [
+      "scripts"
+    ]
+  },
+  "@quasar/testing": {
+    "harnesses": []
+  }
+}

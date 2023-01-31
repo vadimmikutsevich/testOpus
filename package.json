@@ -7,7 +7,9 @@
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
-    "test": "echo \"No test specified\" && exit 0"
+    "test": "echo \"See package.json => scripts for available tests.\" && exit 0",
+    "test:unit": "vitest",
+    "test:unit:ci": "vitest run"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
@@ -21,14 +23,19 @@
     "yarn": "^1.22.19"
   },
   "devDependencies": {
+    "@pinia/testing": "^0.0.14",
     "@quasar/app-vite": "^1.0.0",
+    "@quasar/quasar-app-extension-testing": "^2.0.6",
+    "@quasar/quasar-app-extension-testing-unit-vitest": "^0.1.2",
+    "@vue/test-utils": "^2.0.0",
     "autoprefixer": "^10.4.2",
     "eslint": "^8.10.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-vue": "^9.0.0",
     "postcss": "^8.4.14",
-    "quasar-app-extension-firebase": "^1.0.0-alpha.11"
+    "quasar-app-extension-firebase": "^1.0.0-alpha.11",
+    "vitest": "^0.15.0"
   },
   "engines": {
     "node": "^18 || ^16 || ^14.19",

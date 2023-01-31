@@ -1,5 +1,5 @@
 <template>
-    <div v-if="store.isLoading" class="absolute-center" style="z-index: 99;">
+    <div v-show="store.isLoading" class="absolute-center" style="z-index: 99;">
         <q-spinner-hourglass
           color="primary"
           size="2em"
